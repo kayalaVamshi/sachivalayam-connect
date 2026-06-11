@@ -105,15 +105,16 @@ function AuthPage() {
         </div>
         {isDevMode() && (
           <div className="mt-6 rounded-md border border-dashed border-accent bg-accent/10 p-4 text-xs">
-            <div className="mb-2 font-bold text-foreground">Development mode — demo accounts</div>
-            <ul className="space-y-1 text-muted-foreground">
-              <li>authority@sachivalayam.gov / Authority@123</li>
-              <li>admin1@sachivalayam.gov / Admin1@123</li>
-              <li>officer1@sachivalayam.gov / Officer1@123</li>
-              <li>citizen1@example.com / Citizen1@123</li>
-            </ul>
+            <div className="mb-2 font-bold text-foreground">Development mode</div>
+            <p className="text-muted-foreground">
+              Only the Government Authority account is seeded. Admins self-register and await approval,
+              Officers are created by an approved Admin, and Citizens self-register.
+            </p>
+            <div className="mt-2 text-muted-foreground">
+              Authority: <span className="font-mono">authority@sachivalayam.gov</span> / <span className="font-mono">Authority@123</span>
+            </div>
             <button onClick={seedDemo} disabled={seeding} className="mt-3 rounded bg-accent px-3 py-1.5 text-xs font-semibold text-accent-foreground hover:bg-accent/90 disabled:opacity-60">
-              {seeding ? "Seeding…" : "Seed demo accounts"}
+              {seeding ? "Seeding…" : "Seed Government Authority"}
             </button>
           </div>
         )}
