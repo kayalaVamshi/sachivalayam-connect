@@ -237,9 +237,12 @@ export const updateComplaintStatus = createServerFn({ method: "POST" })
     return { ok: true };
   });
 
-// --- Dev-only: seed demo accounts. Refuses to run if any non-dev marker is missing. ---
+// --- Dev-only: seed Government Authority account ONLY. ---
+// Admin, Officer, and Citizen accounts must be created through the real UI workflows:
+//   • Citizens self-register at /register-citizen
+//   • Admins self-register at /register-admin and await Authority approval
+//   • Officers are created by an approved Admin from the Admin Dashboard
 export const seedDemoAccounts = createServerFn({ method: "POST" }).handler(async () => {
-  // Refuse if not preview/dev. We use the request URL host as a guardrail.
   const { getRequest } = await import("@tanstack/react-start/server");
   const req = getRequest();
   const host = req?.headers.get("host") ?? "";
@@ -249,48 +252,26 @@ export const seedDemoAccounts = createServerFn({ method: "POST" }).handler(async
   if (!isDev) throw new Error("Demo seed disabled in production.");
 
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-  const accounts: Array<{ email: string; password: string; role: "government_authority" | "admin" | "officer" | "citizen"; full_name: string; extra?: Record<string, unknown> }> = [
-    { email: "authority@sachivalayam.gov", password: "Authority@123", role: "government_authority", full_name: "State IT Authority" },
-    { email: "admin1@sachivalayam.gov", password: "Admin1@123", role: "admin", full_name: "Demo Admin",
-      extra: { employee_id: "EMP-DEMO-001", district: "Krishna", mandal: "Vijayawada Urban", village_ward: "Ward 12", department: "Revenue" } },
-    { email: "officer1@sachivalayam.gov", password: "Officer1@123", role: "officer", full_name: "Demo Officer", extra: { department: "Sanitation" } },
-    { email: "citizen1@example.com", password: "Citizen1@123", role: "citizen", full_name: "Demo Citizen" },
-  ];
 
-  const results: Array<{ email: string; created: boolean }> = [];
-  for (const a of accounts) {
-    const { data: existing } = await supabaseAdmin.auth.admin.listUsers({ page: 1, perPage: 200 });
-    const found = existing?.users.find((u) => u.email === a.email);
-    let userId = found?.id;
-    if (!userId) {
-      const { data: c, error } = await supabaseAdmin.auth.admin.createUser({
-        email: a.email, password: a.password, email_confirm: true,
-        user_metadata: { full_name: a.full_name, intended_role: a.role },
-      });
-      if (error || !c.user) { results.push({ email: a.email, created: false }); continue; }
-      userId = c.user.id;
-    }
-    await supabaseAdmin.from("user_roles").delete().eq("user_id", userId);
-    await supabaseAdmin.from("user_roles").insert({ user_id: userId, role: a.role });
-    if (a.role === "admin") {
-      const ex = a.extra as { employee_id: string; district: string; mandal: string; village_ward: string; department: string };
-      await supabaseAdmin.from("admin_registrations").upsert({
-        user_id: userId,
-        employee_id: ex.employee_id, district: ex.district, mandal: ex.mandal,
-        village_ward: ex.village_ward, department: ex.department,
-        verification_status: "approved", verification_date: new Date().toISOString(),
-      }, { onConflict: "user_id" });
-      await supabaseAdmin.from("profiles").update({ department: ex.department, active_status: true }).eq("id", userId);
-    }
-    if (a.role === "officer") {
-      const ex = a.extra as { department: string };
-      await supabaseAdmin.from("officers").upsert({ user_id: userId, department: ex.department }, { onConflict: "user_id" });
-      await supabaseAdmin.from("profiles").update({ department: ex.department }).eq("id", userId);
-    }
-    if (a.role === "government_authority") {
-      await supabaseAdmin.from("system_state").update({ bootstrap_completed: true }).eq("id", 1);
-    }
-    results.push({ email: a.email, created: true });
+  const email = "authority@sachivalayam.gov";
+  const password = "Authority@123";
+  const full_name = "State IT Authority";
+
+  const { data: existing } = await supabaseAdmin.auth.admin.listUsers({ page: 1, perPage: 200 });
+  const found = existing?.users.find((u) => u.email === email);
+  let userId = found?.id;
+  if (!userId) {
+    const { data: c, error } = await supabaseAdmin.auth.admin.createUser({
+      email, password, email_confirm: true,
+      user_metadata: { full_name, intended_role: "government_authority" },
+    });
+    if (error || !c.user) throw new Error(error?.message ?? "Failed to create authority user");
+    userId = c.user.id;
   }
-  return { ok: true, results };
+  await supabaseAdmin.from("user_roles").delete().eq("user_id", userId);
+  await supabaseAdmin.from("user_roles").insert({ user_id: userId, role: "government_authority" });
+  await supabaseAdmin.from("profiles").update({ active_status: true }).eq("id", userId);
+  await supabaseAdmin.from("system_state").update({ bootstrap_completed: true }).eq("id", 1);
+
+  return { ok: true, email, password };
 });
