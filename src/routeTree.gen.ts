@@ -25,6 +25,7 @@ import { Route as AuthenticatedAuthorityIndexRouteImport } from './routes/_authe
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
 import { Route as AuthenticatedComplaintsIdRouteImport } from './routes/_authenticated/complaints/$id'
 import { Route as AuthenticatedCitizenNewRouteImport } from './routes/_authenticated/citizen/new'
+import { Route as AuthenticatedAuthorityComplaintsRouteImport } from './routes/_authenticated/authority/complaints'
 import { Route as AuthenticatedAuthorityAuditLogsRouteImport } from './routes/_authenticated/authority/audit-logs'
 import { Route as AuthenticatedAuthorityAnalyticsRouteImport } from './routes/_authenticated/authority/analytics'
 import { Route as AuthenticatedAuthorityAdminRequestsRouteImport } from './routes/_authenticated/authority/admin-requests'
@@ -114,6 +115,12 @@ const AuthenticatedCitizenNewRoute = AuthenticatedCitizenNewRouteImport.update({
   path: '/citizen/new',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedAuthorityComplaintsRoute =
+  AuthenticatedAuthorityComplaintsRouteImport.update({
+    id: '/authority/complaints',
+    path: '/authority/complaints',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedAuthorityAuditLogsRoute =
   AuthenticatedAuthorityAuditLogsRouteImport.update({
     id: '/authority/audit-logs',
@@ -160,6 +167,7 @@ export interface FileRoutesByFullPath {
   '/authority/admin-requests': typeof AuthenticatedAuthorityAdminRequestsRoute
   '/authority/analytics': typeof AuthenticatedAuthorityAnalyticsRoute
   '/authority/audit-logs': typeof AuthenticatedAuthorityAuditLogsRoute
+  '/authority/complaints': typeof AuthenticatedAuthorityComplaintsRoute
   '/citizen/new': typeof AuthenticatedCitizenNewRoute
   '/complaints/$id': typeof AuthenticatedComplaintsIdRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
@@ -182,6 +190,7 @@ export interface FileRoutesByTo {
   '/authority/admin-requests': typeof AuthenticatedAuthorityAdminRequestsRoute
   '/authority/analytics': typeof AuthenticatedAuthorityAnalyticsRoute
   '/authority/audit-logs': typeof AuthenticatedAuthorityAuditLogsRoute
+  '/authority/complaints': typeof AuthenticatedAuthorityComplaintsRoute
   '/citizen/new': typeof AuthenticatedCitizenNewRoute
   '/complaints/$id': typeof AuthenticatedComplaintsIdRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
@@ -206,6 +215,7 @@ export interface FileRoutesById {
   '/_authenticated/authority/admin-requests': typeof AuthenticatedAuthorityAdminRequestsRoute
   '/_authenticated/authority/analytics': typeof AuthenticatedAuthorityAnalyticsRoute
   '/_authenticated/authority/audit-logs': typeof AuthenticatedAuthorityAuditLogsRoute
+  '/_authenticated/authority/complaints': typeof AuthenticatedAuthorityComplaintsRoute
   '/_authenticated/citizen/new': typeof AuthenticatedCitizenNewRoute
   '/_authenticated/complaints/$id': typeof AuthenticatedComplaintsIdRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
@@ -230,6 +240,7 @@ export interface FileRouteTypes {
     | '/authority/admin-requests'
     | '/authority/analytics'
     | '/authority/audit-logs'
+    | '/authority/complaints'
     | '/citizen/new'
     | '/complaints/$id'
     | '/admin/'
@@ -252,6 +263,7 @@ export interface FileRouteTypes {
     | '/authority/admin-requests'
     | '/authority/analytics'
     | '/authority/audit-logs'
+    | '/authority/complaints'
     | '/citizen/new'
     | '/complaints/$id'
     | '/admin'
@@ -275,6 +287,7 @@ export interface FileRouteTypes {
     | '/_authenticated/authority/admin-requests'
     | '/_authenticated/authority/analytics'
     | '/_authenticated/authority/audit-logs'
+    | '/_authenticated/authority/complaints'
     | '/_authenticated/citizen/new'
     | '/_authenticated/complaints/$id'
     | '/_authenticated/admin/'
@@ -409,6 +422,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCitizenNewRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/authority/complaints': {
+      id: '/_authenticated/authority/complaints'
+      path: '/authority/complaints'
+      fullPath: '/authority/complaints'
+      preLoaderRoute: typeof AuthenticatedAuthorityComplaintsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/authority/audit-logs': {
       id: '/_authenticated/authority/audit-logs'
       path: '/authority/audit-logs'
@@ -454,6 +474,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAuthorityAdminRequestsRoute: typeof AuthenticatedAuthorityAdminRequestsRoute
   AuthenticatedAuthorityAnalyticsRoute: typeof AuthenticatedAuthorityAnalyticsRoute
   AuthenticatedAuthorityAuditLogsRoute: typeof AuthenticatedAuthorityAuditLogsRoute
+  AuthenticatedAuthorityComplaintsRoute: typeof AuthenticatedAuthorityComplaintsRoute
   AuthenticatedCitizenNewRoute: typeof AuthenticatedCitizenNewRoute
   AuthenticatedComplaintsIdRoute: typeof AuthenticatedComplaintsIdRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
@@ -470,6 +491,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
     AuthenticatedAuthorityAdminRequestsRoute,
   AuthenticatedAuthorityAnalyticsRoute: AuthenticatedAuthorityAnalyticsRoute,
   AuthenticatedAuthorityAuditLogsRoute: AuthenticatedAuthorityAuditLogsRoute,
+  AuthenticatedAuthorityComplaintsRoute: AuthenticatedAuthorityComplaintsRoute,
   AuthenticatedCitizenNewRoute: AuthenticatedCitizenNewRoute,
   AuthenticatedComplaintsIdRoute: AuthenticatedComplaintsIdRoute,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,

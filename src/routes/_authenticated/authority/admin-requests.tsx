@@ -10,7 +10,7 @@ export const Route = createFileRoute("/_authenticated/authority/admin-requests")
 interface Row {
   id: string; user_id: string; employee_id: string; district: string; mandal: string; village_ward: string;
   department: string; verification_status: string; created_at: string;
-  full_name?: string; email?: string; mobile_number?: string; active_status?: boolean;
+  full_name?: string | null; email?: string | null; mobile_number?: string | null; active_status?: boolean;
 }
 
 function AdminRequests() {
