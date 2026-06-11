@@ -9,38 +9,350 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as RegisterCitizenRouteImport } from './routes/register-citizen'
+import { Route as RegisterAdminRouteImport } from './routes/register-admin'
+import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
+import { Route as BootstrapGovRouteImport } from './routes/bootstrap-gov'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AccessDeniedRouteImport } from './routes/access-denied'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
+import { Route as AuthenticatedOfficerIndexRouteImport } from './routes/_authenticated/officer/index'
+import { Route as AuthenticatedCitizenIndexRouteImport } from './routes/_authenticated/citizen/index'
+import { Route as AuthenticatedAuthorityIndexRouteImport } from './routes/_authenticated/authority/index'
+import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
+import { Route as AuthenticatedComplaintsIdRouteImport } from './routes/_authenticated/complaints/$id'
+import { Route as AuthenticatedCitizenNewRouteImport } from './routes/_authenticated/citizen/new'
+import { Route as AuthenticatedAuthorityAuditLogsRouteImport } from './routes/_authenticated/authority/audit-logs'
+import { Route as AuthenticatedAuthorityAnalyticsRouteImport } from './routes/_authenticated/authority/analytics'
+import { Route as AuthenticatedAuthorityAdminRequestsRouteImport } from './routes/_authenticated/authority/admin-requests'
+import { Route as AuthenticatedAdminOfficersRouteImport } from './routes/_authenticated/admin/officers'
+import { Route as AuthenticatedAdminComplaintsRouteImport } from './routes/_authenticated/admin/complaints'
 
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegisterCitizenRoute = RegisterCitizenRouteImport.update({
+  id: '/register-citizen',
+  path: '/register-citizen',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegisterAdminRoute = RegisterAdminRouteImport.update({
+  id: '/register-admin',
+  path: '/register-admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BootstrapGovRoute = BootstrapGovRouteImport.update({
+  id: '/bootstrap-gov',
+  path: '/bootstrap-gov',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccessDeniedRoute = AccessDeniedRouteImport.update({
+  id: '/access-denied',
+  path: '/access-denied',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedOfficerIndexRoute =
+  AuthenticatedOfficerIndexRouteImport.update({
+    id: '/officer/',
+    path: '/officer/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedCitizenIndexRoute =
+  AuthenticatedCitizenIndexRouteImport.update({
+    id: '/citizen/',
+    path: '/citizen/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAuthorityIndexRoute =
+  AuthenticatedAuthorityIndexRouteImport.update({
+    id: '/authority/',
+    path: '/authority/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedComplaintsIdRoute =
+  AuthenticatedComplaintsIdRouteImport.update({
+    id: '/complaints/$id',
+    path: '/complaints/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedCitizenNewRoute = AuthenticatedCitizenNewRouteImport.update({
+  id: '/citizen/new',
+  path: '/citizen/new',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAuthorityAuditLogsRoute =
+  AuthenticatedAuthorityAuditLogsRouteImport.update({
+    id: '/authority/audit-logs',
+    path: '/authority/audit-logs',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAuthorityAnalyticsRoute =
+  AuthenticatedAuthorityAnalyticsRouteImport.update({
+    id: '/authority/analytics',
+    path: '/authority/analytics',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAuthorityAdminRequestsRoute =
+  AuthenticatedAuthorityAdminRequestsRouteImport.update({
+    id: '/authority/admin-requests',
+    path: '/authority/admin-requests',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAdminOfficersRoute =
+  AuthenticatedAdminOfficersRouteImport.update({
+    id: '/admin/officers',
+    path: '/admin/officers',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAdminComplaintsRoute =
+  AuthenticatedAdminComplaintsRouteImport.update({
+    id: '/admin/complaints',
+    path: '/admin/complaints',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/access-denied': typeof AccessDeniedRoute
+  '/auth': typeof AuthRoute
+  '/bootstrap-gov': typeof BootstrapGovRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/register-admin': typeof RegisterAdminRoute
+  '/register-citizen': typeof RegisterCitizenRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/profile': typeof AuthenticatedProfileRoute
+  '/admin/complaints': typeof AuthenticatedAdminComplaintsRoute
+  '/admin/officers': typeof AuthenticatedAdminOfficersRoute
+  '/authority/admin-requests': typeof AuthenticatedAuthorityAdminRequestsRoute
+  '/authority/analytics': typeof AuthenticatedAuthorityAnalyticsRoute
+  '/authority/audit-logs': typeof AuthenticatedAuthorityAuditLogsRoute
+  '/citizen/new': typeof AuthenticatedCitizenNewRoute
+  '/complaints/$id': typeof AuthenticatedComplaintsIdRoute
+  '/admin/': typeof AuthenticatedAdminIndexRoute
+  '/authority/': typeof AuthenticatedAuthorityIndexRoute
+  '/citizen/': typeof AuthenticatedCitizenIndexRoute
+  '/officer/': typeof AuthenticatedOfficerIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/access-denied': typeof AccessDeniedRoute
+  '/auth': typeof AuthRoute
+  '/bootstrap-gov': typeof BootstrapGovRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/register-admin': typeof RegisterAdminRoute
+  '/register-citizen': typeof RegisterCitizenRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/profile': typeof AuthenticatedProfileRoute
+  '/admin/complaints': typeof AuthenticatedAdminComplaintsRoute
+  '/admin/officers': typeof AuthenticatedAdminOfficersRoute
+  '/authority/admin-requests': typeof AuthenticatedAuthorityAdminRequestsRoute
+  '/authority/analytics': typeof AuthenticatedAuthorityAnalyticsRoute
+  '/authority/audit-logs': typeof AuthenticatedAuthorityAuditLogsRoute
+  '/citizen/new': typeof AuthenticatedCitizenNewRoute
+  '/complaints/$id': typeof AuthenticatedComplaintsIdRoute
+  '/admin': typeof AuthenticatedAdminIndexRoute
+  '/authority': typeof AuthenticatedAuthorityIndexRoute
+  '/citizen': typeof AuthenticatedCitizenIndexRoute
+  '/officer': typeof AuthenticatedOfficerIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/access-denied': typeof AccessDeniedRoute
+  '/auth': typeof AuthRoute
+  '/bootstrap-gov': typeof BootstrapGovRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/register-admin': typeof RegisterAdminRoute
+  '/register-citizen': typeof RegisterCitizenRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/_authenticated/profile': typeof AuthenticatedProfileRoute
+  '/_authenticated/admin/complaints': typeof AuthenticatedAdminComplaintsRoute
+  '/_authenticated/admin/officers': typeof AuthenticatedAdminOfficersRoute
+  '/_authenticated/authority/admin-requests': typeof AuthenticatedAuthorityAdminRequestsRoute
+  '/_authenticated/authority/analytics': typeof AuthenticatedAuthorityAnalyticsRoute
+  '/_authenticated/authority/audit-logs': typeof AuthenticatedAuthorityAuditLogsRoute
+  '/_authenticated/citizen/new': typeof AuthenticatedCitizenNewRoute
+  '/_authenticated/complaints/$id': typeof AuthenticatedComplaintsIdRoute
+  '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
+  '/_authenticated/authority/': typeof AuthenticatedAuthorityIndexRoute
+  '/_authenticated/citizen/': typeof AuthenticatedCitizenIndexRoute
+  '/_authenticated/officer/': typeof AuthenticatedOfficerIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/access-denied'
+    | '/auth'
+    | '/bootstrap-gov'
+    | '/forgot-password'
+    | '/register-admin'
+    | '/register-citizen'
+    | '/reset-password'
+    | '/profile'
+    | '/admin/complaints'
+    | '/admin/officers'
+    | '/authority/admin-requests'
+    | '/authority/analytics'
+    | '/authority/audit-logs'
+    | '/citizen/new'
+    | '/complaints/$id'
+    | '/admin/'
+    | '/authority/'
+    | '/citizen/'
+    | '/officer/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/access-denied'
+    | '/auth'
+    | '/bootstrap-gov'
+    | '/forgot-password'
+    | '/register-admin'
+    | '/register-citizen'
+    | '/reset-password'
+    | '/profile'
+    | '/admin/complaints'
+    | '/admin/officers'
+    | '/authority/admin-requests'
+    | '/authority/analytics'
+    | '/authority/audit-logs'
+    | '/citizen/new'
+    | '/complaints/$id'
+    | '/admin'
+    | '/authority'
+    | '/citizen'
+    | '/officer'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/access-denied'
+    | '/auth'
+    | '/bootstrap-gov'
+    | '/forgot-password'
+    | '/register-admin'
+    | '/register-citizen'
+    | '/reset-password'
+    | '/_authenticated/profile'
+    | '/_authenticated/admin/complaints'
+    | '/_authenticated/admin/officers'
+    | '/_authenticated/authority/admin-requests'
+    | '/_authenticated/authority/analytics'
+    | '/_authenticated/authority/audit-logs'
+    | '/_authenticated/citizen/new'
+    | '/_authenticated/complaints/$id'
+    | '/_authenticated/admin/'
+    | '/_authenticated/authority/'
+    | '/_authenticated/citizen/'
+    | '/_authenticated/officer/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AccessDeniedRoute: typeof AccessDeniedRoute
+  AuthRoute: typeof AuthRoute
+  BootstrapGovRoute: typeof BootstrapGovRoute
+  ForgotPasswordRoute: typeof ForgotPasswordRoute
+  RegisterAdminRoute: typeof RegisterAdminRoute
+  RegisterCitizenRoute: typeof RegisterCitizenRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/register-citizen': {
+      id: '/register-citizen'
+      path: '/register-citizen'
+      fullPath: '/register-citizen'
+      preLoaderRoute: typeof RegisterCitizenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/register-admin': {
+      id: '/register-admin'
+      path: '/register-admin'
+      fullPath: '/register-admin'
+      preLoaderRoute: typeof RegisterAdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forgot-password': {
+      id: '/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof ForgotPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bootstrap-gov': {
+      id: '/bootstrap-gov'
+      path: '/bootstrap-gov'
+      fullPath: '/bootstrap-gov'
+      preLoaderRoute: typeof BootstrapGovRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/access-denied': {
+      id: '/access-denied'
+      path: '/access-denied'
+      fullPath: '/access-denied'
+      preLoaderRoute: typeof AccessDeniedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +360,137 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/profile': {
+      id: '/_authenticated/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AuthenticatedProfileRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/officer/': {
+      id: '/_authenticated/officer/'
+      path: '/officer'
+      fullPath: '/officer/'
+      preLoaderRoute: typeof AuthenticatedOfficerIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/citizen/': {
+      id: '/_authenticated/citizen/'
+      path: '/citizen'
+      fullPath: '/citizen/'
+      preLoaderRoute: typeof AuthenticatedCitizenIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/authority/': {
+      id: '/_authenticated/authority/'
+      path: '/authority'
+      fullPath: '/authority/'
+      preLoaderRoute: typeof AuthenticatedAuthorityIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin/': {
+      id: '/_authenticated/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/complaints/$id': {
+      id: '/_authenticated/complaints/$id'
+      path: '/complaints/$id'
+      fullPath: '/complaints/$id'
+      preLoaderRoute: typeof AuthenticatedComplaintsIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/citizen/new': {
+      id: '/_authenticated/citizen/new'
+      path: '/citizen/new'
+      fullPath: '/citizen/new'
+      preLoaderRoute: typeof AuthenticatedCitizenNewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/authority/audit-logs': {
+      id: '/_authenticated/authority/audit-logs'
+      path: '/authority/audit-logs'
+      fullPath: '/authority/audit-logs'
+      preLoaderRoute: typeof AuthenticatedAuthorityAuditLogsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/authority/analytics': {
+      id: '/_authenticated/authority/analytics'
+      path: '/authority/analytics'
+      fullPath: '/authority/analytics'
+      preLoaderRoute: typeof AuthenticatedAuthorityAnalyticsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/authority/admin-requests': {
+      id: '/_authenticated/authority/admin-requests'
+      path: '/authority/admin-requests'
+      fullPath: '/authority/admin-requests'
+      preLoaderRoute: typeof AuthenticatedAuthorityAdminRequestsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin/officers': {
+      id: '/_authenticated/admin/officers'
+      path: '/admin/officers'
+      fullPath: '/admin/officers'
+      preLoaderRoute: typeof AuthenticatedAdminOfficersRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin/complaints': {
+      id: '/_authenticated/admin/complaints'
+      path: '/admin/complaints'
+      fullPath: '/admin/complaints'
+      preLoaderRoute: typeof AuthenticatedAdminComplaintsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
+  AuthenticatedAdminComplaintsRoute: typeof AuthenticatedAdminComplaintsRoute
+  AuthenticatedAdminOfficersRoute: typeof AuthenticatedAdminOfficersRoute
+  AuthenticatedAuthorityAdminRequestsRoute: typeof AuthenticatedAuthorityAdminRequestsRoute
+  AuthenticatedAuthorityAnalyticsRoute: typeof AuthenticatedAuthorityAnalyticsRoute
+  AuthenticatedAuthorityAuditLogsRoute: typeof AuthenticatedAuthorityAuditLogsRoute
+  AuthenticatedCitizenNewRoute: typeof AuthenticatedCitizenNewRoute
+  AuthenticatedComplaintsIdRoute: typeof AuthenticatedComplaintsIdRoute
+  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
+  AuthenticatedAuthorityIndexRoute: typeof AuthenticatedAuthorityIndexRoute
+  AuthenticatedCitizenIndexRoute: typeof AuthenticatedCitizenIndexRoute
+  AuthenticatedOfficerIndexRoute: typeof AuthenticatedOfficerIndexRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedProfileRoute: AuthenticatedProfileRoute,
+  AuthenticatedAdminComplaintsRoute: AuthenticatedAdminComplaintsRoute,
+  AuthenticatedAdminOfficersRoute: AuthenticatedAdminOfficersRoute,
+  AuthenticatedAuthorityAdminRequestsRoute:
+    AuthenticatedAuthorityAdminRequestsRoute,
+  AuthenticatedAuthorityAnalyticsRoute: AuthenticatedAuthorityAnalyticsRoute,
+  AuthenticatedAuthorityAuditLogsRoute: AuthenticatedAuthorityAuditLogsRoute,
+  AuthenticatedCitizenNewRoute: AuthenticatedCitizenNewRoute,
+  AuthenticatedComplaintsIdRoute: AuthenticatedComplaintsIdRoute,
+  AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
+  AuthenticatedAuthorityIndexRoute: AuthenticatedAuthorityIndexRoute,
+  AuthenticatedCitizenIndexRoute: AuthenticatedCitizenIndexRoute,
+  AuthenticatedOfficerIndexRoute: AuthenticatedOfficerIndexRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AccessDeniedRoute: AccessDeniedRoute,
+  AuthRoute: AuthRoute,
+  BootstrapGovRoute: BootstrapGovRoute,
+  ForgotPasswordRoute: ForgotPasswordRoute,
+  RegisterAdminRoute: RegisterAdminRoute,
+  RegisterCitizenRoute: RegisterCitizenRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
