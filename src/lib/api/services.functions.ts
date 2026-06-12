@@ -154,7 +154,9 @@ export const updateServiceStatus = createServerFn({ method: "POST" })
     const { data: isAdmin } = await context.supabase.rpc("has_role", { _user_id: context.userId, _role: "admin" });
     if (app.assigned_officer_id !== context.userId && !isAdmin) throw new Error("Forbidden");
 
-    const patch: Record<string, unknown> = { status: data.status, last_remark: data.remarks ?? null };
+    const patch: { status: typeof data.status; last_remark: string | null; approved_at?: string; completed_at?: string } = {
+      status: data.status, last_remark: data.remarks ?? null,
+    };
     if (data.status === "approved") patch.approved_at = new Date().toISOString();
     if (data.status === "completed") patch.completed_at = new Date().toISOString();
 
