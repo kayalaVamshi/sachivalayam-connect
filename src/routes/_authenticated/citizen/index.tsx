@@ -32,8 +32,10 @@ function CitizenDashboard() {
 
   const stats = {
     total: complaints.length,
-    open: complaints.filter((c) => !["resolved", "rejected"].includes(c.status)).length,
+    pending: complaints.filter((c) => c.status === "submitted").length,
+    inProgress: complaints.filter((c) => ["assigned", "under_review", "in_progress"].includes(c.status)).length,
     resolved: complaints.filter((c) => c.status === "resolved").length,
+    rejected: complaints.filter((c) => c.status === "rejected").length,
   };
 
   return (
@@ -47,15 +49,17 @@ function CitizenDashboard() {
           <Plus className="h-4 w-4" />New Complaint
         </Link>
       </div>
-      <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
-        {[
-          ["Total complaints", stats.total],
-          ["Open", stats.open],
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-5">
+        {([
+          ["Total", stats.total],
+          ["Pending", stats.pending],
+          ["In progress", stats.inProgress],
           ["Resolved", stats.resolved],
-        ].map(([label, value]) => (
-          <div key={label as string} className="rounded-lg border bg-card p-5">
-            <div className="text-sm text-muted-foreground">{label as string}</div>
-            <div className="mt-1 text-3xl font-bold">{value as number}</div>
+          ["Rejected", stats.rejected],
+        ] as const).map(([label, value]) => (
+          <div key={label} className="rounded-lg border bg-card p-5">
+            <div className="text-sm text-muted-foreground">{label}</div>
+            <div className="mt-1 text-3xl font-bold">{value}</div>
           </div>
         ))}
       </div>
