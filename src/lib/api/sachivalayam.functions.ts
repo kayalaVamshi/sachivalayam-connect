@@ -58,27 +58,32 @@ export const decideAdminRegistration = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) => decisionSchema.parse(d))
   .handler(async ({ data, context }) => {
+    const registrationId = String(data.registrationId).trim();
+    console.log("[decideAdminRegistration] start", { registrationId, decision: data.decision, actor: context.userId });
+
     const { data: isGov } = await context.supabase.rpc("has_role", {
       _user_id: context.userId, _role: "government_authority",
     });
-    if (!isGov) throw new Error("Forbidden");
+    if (!isGov) throw new Error("Forbidden: not a Government Authority");
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: reg, error: regErr } = await supabaseAdmin
-      .from("admin_registrations").select("*").eq("id", data.registrationId).maybeSingle();
-    if (regErr || !reg) throw new Error("Registration not found");
+      .from("admin_registrations").select("*").eq("id", registrationId).maybeSingle();
+    console.log("[decideAdminRegistration] lookup", { found: !!reg, regErr: regErr?.message });
+    if (regErr) throw new Error(`Lookup failed: ${regErr.message}`);
+    if (!reg) throw new Error(`Registration not found for id=${registrationId}`);
 
-    await supabaseAdmin.from("admin_registrations").update({
+    const { error: updErr } = await supabaseAdmin.from("admin_registrations").update({
       verification_status: data.decision,
       verification_remarks: data.remarks ?? null,
       verification_date: new Date().toISOString(),
       verified_by: context.userId,
-    }).eq("id", data.registrationId);
+    }).eq("id", registrationId);
+    if (updErr) throw new Error(`Update failed: ${updErr.message}`);
 
     if (data.decision === "approved") {
-      await supabaseAdmin.from("user_roles").upsert(
-        { user_id: reg.user_id, role: "admin" }, { onConflict: "user_id,role" }
-      );
+      await supabaseAdmin.from("user_roles").delete().eq("user_id", reg.user_id);
+      await supabaseAdmin.from("user_roles").insert({ user_id: reg.user_id, role: "admin" });
       await supabaseAdmin.from("profiles").update({ active_status: true }).eq("id", reg.user_id);
     } else {
       await supabaseAdmin.from("profiles").update({ active_status: false }).eq("id", reg.user_id);
@@ -92,7 +97,7 @@ export const decideAdminRegistration = createServerFn({ method: "POST" })
     });
     await supabaseAdmin.from("audit_logs").insert({
       actor_id: context.userId, action: `ADMIN_${data.decision.toUpperCase()}`,
-      entity_type: "admin_registration", entity_id: data.registrationId, metadata: { remarks: data.remarks },
+      entity_type: "admin_registration", entity_id: registrationId, metadata: { remarks: data.remarks },
     });
     return { ok: true };
   });
