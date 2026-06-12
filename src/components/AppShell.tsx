@@ -11,15 +11,18 @@ const NAV: Record<AppRole, NavItem[]> = {
   citizen: [
     { to: "/citizen", label: "Dashboard", icon: LayoutDashboard },
     { to: "/citizen/new", label: "New Complaint", icon: FilePlus2 },
+    { to: "/citizen/services", label: "Government Services", icon: FileCheck },
     { to: "/profile", label: "Profile", icon: UserCog },
   ],
   officer: [
     { to: "/officer", label: "Dashboard", icon: LayoutDashboard },
+    { to: "/officer/applications", label: "Service Applications", icon: FileCheck },
     { to: "/profile", label: "Profile", icon: UserCog },
   ],
   admin: [
     { to: "/admin", label: "Dashboard", icon: LayoutDashboard },
     { to: "/admin/complaints", label: "Complaints", icon: FileText },
+    { to: "/admin/applications", label: "Service Applications", icon: FileCheck },
     { to: "/admin/officers", label: "Officers", icon: Users },
     { to: "/profile", label: "Profile", icon: UserCog },
   ],
