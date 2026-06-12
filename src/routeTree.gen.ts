@@ -23,6 +23,7 @@ import { Route as AuthenticatedOfficerIndexRouteImport } from './routes/_authent
 import { Route as AuthenticatedCitizenIndexRouteImport } from './routes/_authenticated/citizen/index'
 import { Route as AuthenticatedAuthorityIndexRouteImport } from './routes/_authenticated/authority/index'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
+import { Route as AuthenticatedOfficerApplicationsRouteImport } from './routes/_authenticated/officer/applications'
 import { Route as AuthenticatedComplaintsIdRouteImport } from './routes/_authenticated/complaints/$id'
 import { Route as AuthenticatedCitizenServicesRouteImport } from './routes/_authenticated/citizen/services'
 import { Route as AuthenticatedCitizenNewRouteImport } from './routes/_authenticated/citizen/new'
@@ -108,6 +109,12 @@ const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   path: '/admin/',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedOfficerApplicationsRoute =
+  AuthenticatedOfficerApplicationsRouteImport.update({
+    id: '/officer/applications',
+    path: '/officer/applications',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedComplaintsIdRoute =
   AuthenticatedComplaintsIdRouteImport.update({
     id: '/complaints/$id',
@@ -200,6 +207,7 @@ export interface FileRoutesByFullPath {
   '/citizen/new': typeof AuthenticatedCitizenNewRoute
   '/citizen/services': typeof AuthenticatedCitizenServicesRouteWithChildren
   '/complaints/$id': typeof AuthenticatedComplaintsIdRoute
+  '/officer/applications': typeof AuthenticatedOfficerApplicationsRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/authority/': typeof AuthenticatedAuthorityIndexRoute
   '/citizen/': typeof AuthenticatedCitizenIndexRoute
@@ -227,6 +235,7 @@ export interface FileRoutesByTo {
   '/citizen/new': typeof AuthenticatedCitizenNewRoute
   '/citizen/services': typeof AuthenticatedCitizenServicesRouteWithChildren
   '/complaints/$id': typeof AuthenticatedComplaintsIdRoute
+  '/officer/applications': typeof AuthenticatedOfficerApplicationsRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/authority': typeof AuthenticatedAuthorityIndexRoute
   '/citizen': typeof AuthenticatedCitizenIndexRoute
@@ -256,6 +265,7 @@ export interface FileRoutesById {
   '/_authenticated/citizen/new': typeof AuthenticatedCitizenNewRoute
   '/_authenticated/citizen/services': typeof AuthenticatedCitizenServicesRouteWithChildren
   '/_authenticated/complaints/$id': typeof AuthenticatedComplaintsIdRoute
+  '/_authenticated/officer/applications': typeof AuthenticatedOfficerApplicationsRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/authority/': typeof AuthenticatedAuthorityIndexRoute
   '/_authenticated/citizen/': typeof AuthenticatedCitizenIndexRoute
@@ -285,6 +295,7 @@ export interface FileRouteTypes {
     | '/citizen/new'
     | '/citizen/services'
     | '/complaints/$id'
+    | '/officer/applications'
     | '/admin/'
     | '/authority/'
     | '/citizen/'
@@ -312,6 +323,7 @@ export interface FileRouteTypes {
     | '/citizen/new'
     | '/citizen/services'
     | '/complaints/$id'
+    | '/officer/applications'
     | '/admin'
     | '/authority'
     | '/citizen'
@@ -340,6 +352,7 @@ export interface FileRouteTypes {
     | '/_authenticated/citizen/new'
     | '/_authenticated/citizen/services'
     | '/_authenticated/complaints/$id'
+    | '/_authenticated/officer/applications'
     | '/_authenticated/admin/'
     | '/_authenticated/authority/'
     | '/_authenticated/citizen/'
@@ -460,6 +473,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/officer/applications': {
+      id: '/_authenticated/officer/applications'
+      path: '/officer/applications'
+      fullPath: '/officer/applications'
+      preLoaderRoute: typeof AuthenticatedOfficerApplicationsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/complaints/$id': {
       id: '/_authenticated/complaints/$id'
       path: '/complaints/$id'
@@ -576,6 +596,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedCitizenNewRoute: typeof AuthenticatedCitizenNewRoute
   AuthenticatedCitizenServicesRoute: typeof AuthenticatedCitizenServicesRouteWithChildren
   AuthenticatedComplaintsIdRoute: typeof AuthenticatedComplaintsIdRoute
+  AuthenticatedOfficerApplicationsRoute: typeof AuthenticatedOfficerApplicationsRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
   AuthenticatedAuthorityIndexRoute: typeof AuthenticatedAuthorityIndexRoute
   AuthenticatedCitizenIndexRoute: typeof AuthenticatedCitizenIndexRoute
@@ -596,6 +617,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedCitizenServicesRoute:
     AuthenticatedCitizenServicesRouteWithChildren,
   AuthenticatedComplaintsIdRoute: AuthenticatedComplaintsIdRoute,
+  AuthenticatedOfficerApplicationsRoute: AuthenticatedOfficerApplicationsRoute,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
   AuthenticatedAuthorityIndexRoute: AuthenticatedAuthorityIndexRoute,
   AuthenticatedCitizenIndexRoute: AuthenticatedCitizenIndexRoute,
