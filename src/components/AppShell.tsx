@@ -2,7 +2,7 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
 import { useAuth, type AppRole } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
-import { Bell, LogOut, ShieldCheck, Users, FileText, BarChart3, ListTodo, FilePlus2, History, UserCog, ScrollText, LayoutDashboard } from "lucide-react";
+import { Bell, LogOut, ShieldCheck, Users, FileText, BarChart3, FilePlus2, UserCog, ScrollText, LayoutDashboard, FileCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface NavItem { to: string; label: string; icon: React.ComponentType<{ className?: string }>; }
@@ -11,15 +11,18 @@ const NAV: Record<AppRole, NavItem[]> = {
   citizen: [
     { to: "/citizen", label: "Dashboard", icon: LayoutDashboard },
     { to: "/citizen/new", label: "New Complaint", icon: FilePlus2 },
+    { to: "/citizen/services", label: "Government Services", icon: FileCheck },
     { to: "/profile", label: "Profile", icon: UserCog },
   ],
   officer: [
     { to: "/officer", label: "Dashboard", icon: LayoutDashboard },
+    { to: "/officer/applications", label: "Service Applications", icon: FileCheck },
     { to: "/profile", label: "Profile", icon: UserCog },
   ],
   admin: [
     { to: "/admin", label: "Dashboard", icon: LayoutDashboard },
     { to: "/admin/complaints", label: "Complaints", icon: FileText },
+    { to: "/admin/applications", label: "Service Applications", icon: FileCheck },
     { to: "/admin/officers", label: "Officers", icon: Users },
     { to: "/profile", label: "Profile", icon: UserCog },
   ],

@@ -31,7 +31,10 @@ function AdminRequests() {
         .select("id,full_name,email,mobile_number,active_status").in("id", ids);
       profs?.forEach((p) => { profMap[p.id] = p as never; });
     }
-    setRows(regs.map((r) => ({ ...r, ...profMap[r.user_id] })));
+    setRows(regs.map((r) => {
+      const p = profMap[r.user_id];
+      return p ? { ...r, full_name: p.full_name, email: p.email, mobile_number: p.mobile_number, active_status: p.active_status } : r;
+    }));
   };
   useEffect(() => { load(); /* eslint-disable-next-line */ }, [filter]);
 

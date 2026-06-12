@@ -277,6 +277,157 @@ export type Database = {
         }
         Relationships: []
       }
+      service_app_documents: {
+        Row: {
+          application_id: string
+          created_at: string
+          doc_type: string
+          file_path: string | null
+          id: string
+          notes: string | null
+          requested_by: string | null
+          status: string
+          updated_at: string
+          uploaded_by: string | null
+        }
+        Insert: {
+          application_id: string
+          created_at?: string
+          doc_type: string
+          file_path?: string | null
+          id?: string
+          notes?: string | null
+          requested_by?: string | null
+          status?: string
+          updated_at?: string
+          uploaded_by?: string | null
+        }
+        Update: {
+          application_id?: string
+          created_at?: string
+          doc_type?: string
+          file_path?: string | null
+          id?: string
+          notes?: string | null
+          requested_by?: string | null
+          status?: string
+          updated_at?: string
+          uploaded_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "service_app_documents_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "service_applications"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      service_app_timeline: {
+        Row: {
+          application_id: string
+          created_at: string
+          id: string
+          remarks: string | null
+          status: Database["public"]["Enums"]["service_app_status"]
+          updated_by: string | null
+        }
+        Insert: {
+          application_id: string
+          created_at?: string
+          id?: string
+          remarks?: string | null
+          status: Database["public"]["Enums"]["service_app_status"]
+          updated_by?: string | null
+        }
+        Update: {
+          application_id?: string
+          created_at?: string
+          id?: string
+          remarks?: string | null
+          status?: Database["public"]["Enums"]["service_app_status"]
+          updated_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "service_app_timeline_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "service_applications"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      service_applications: {
+        Row: {
+          aadhaar_number: string
+          address: string
+          application_number: string | null
+          application_type: Database["public"]["Enums"]["service_app_type"]
+          approved_at: string | null
+          assigned_officer_id: string | null
+          citizen_id: string
+          citizen_name: string
+          completed_at: string | null
+          created_at: string
+          department: string | null
+          district: string
+          email: string | null
+          id: string
+          last_remark: string | null
+          mandal: string
+          mobile_number: string
+          status: Database["public"]["Enums"]["service_app_status"]
+          updated_at: string
+          village: string
+        }
+        Insert: {
+          aadhaar_number: string
+          address: string
+          application_number?: string | null
+          application_type: Database["public"]["Enums"]["service_app_type"]
+          approved_at?: string | null
+          assigned_officer_id?: string | null
+          citizen_id: string
+          citizen_name: string
+          completed_at?: string | null
+          created_at?: string
+          department?: string | null
+          district: string
+          email?: string | null
+          id?: string
+          last_remark?: string | null
+          mandal: string
+          mobile_number: string
+          status?: Database["public"]["Enums"]["service_app_status"]
+          updated_at?: string
+          village: string
+        }
+        Update: {
+          aadhaar_number?: string
+          address?: string
+          application_number?: string | null
+          application_type?: Database["public"]["Enums"]["service_app_type"]
+          approved_at?: string | null
+          assigned_officer_id?: string | null
+          citizen_id?: string
+          citizen_name?: string
+          completed_at?: string | null
+          created_at?: string
+          department?: string | null
+          district?: string
+          email?: string | null
+          id?: string
+          last_remark?: string | null
+          mandal?: string
+          mobile_number?: string
+          status?: Database["public"]["Enums"]["service_app_status"]
+          updated_at?: string
+          village?: string
+        }
+        Relationships: []
+      }
       system_state: {
         Row: {
           bootstrap_completed: boolean
@@ -349,6 +500,22 @@ export type Database = {
         | "in_progress"
         | "resolved"
         | "rejected"
+      service_app_status:
+        | "submitted"
+        | "assigned"
+        | "under_verification"
+        | "documents_required"
+        | "approved"
+        | "rejected"
+        | "completed"
+      service_app_type:
+        | "income_certificate"
+        | "pension"
+        | "ration_card"
+        | "caste_certificate"
+        | "residence_certificate"
+        | "birth_certificate"
+        | "death_certificate"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -495,6 +662,24 @@ export const Constants = {
         "in_progress",
         "resolved",
         "rejected",
+      ],
+      service_app_status: [
+        "submitted",
+        "assigned",
+        "under_verification",
+        "documents_required",
+        "approved",
+        "rejected",
+        "completed",
+      ],
+      service_app_type: [
+        "income_certificate",
+        "pension",
+        "ration_card",
+        "caste_certificate",
+        "residence_certificate",
+        "birth_certificate",
+        "death_certificate",
       ],
     },
   },
