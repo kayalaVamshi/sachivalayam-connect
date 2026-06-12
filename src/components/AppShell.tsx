@@ -2,7 +2,7 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
 import { useAuth, type AppRole } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
-import { Bell, LogOut, ShieldCheck, Users, FileText, BarChart3, ListTodo, FilePlus2, History, UserCog, ScrollText, LayoutDashboard } from "lucide-react";
+import { Bell, LogOut, ShieldCheck, Users, FileText, BarChart3, FilePlus2, UserCog, ScrollText, LayoutDashboard, FileCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface NavItem { to: string; label: string; icon: React.ComponentType<{ className?: string }>; }
