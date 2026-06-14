@@ -154,7 +154,8 @@ export const updateServiceStatus = createServerFn({ method: "POST" })
     const { data: app } = await supabaseAdmin.from("service_applications").select("*").eq("id", data.applicationId).maybeSingle();
     if (!app) throw new Error("Application not found");
     const { data: isAdmin } = await context.supabase.rpc("has_role", { _user_id: context.userId, _role: "admin" });
-    if (app.assigned_officer_id !== context.userId && !isAdmin) throw new Error("Forbidden");
+    const { data: isGov } = await context.supabase.rpc("has_role", { _user_id: context.userId, _role: "government_authority" });
+    if (app.assigned_officer_id !== context.userId && !isAdmin && !isGov) throw new Error("Forbidden");
 
     const patch: { status: typeof data.status; last_remark: string | null; approved_at?: string; completed_at?: string } = {
       status: data.status, last_remark: data.remarks ?? null,
