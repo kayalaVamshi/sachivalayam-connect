@@ -29,6 +29,7 @@ import { Route as AuthenticatedCitizenServicesRouteImport } from './routes/_auth
 import { Route as AuthenticatedCitizenNewRouteImport } from './routes/_authenticated/citizen/new'
 import { Route as AuthenticatedAuthorityComplaintsRouteImport } from './routes/_authenticated/authority/complaints'
 import { Route as AuthenticatedAuthorityAuditLogsRouteImport } from './routes/_authenticated/authority/audit-logs'
+import { Route as AuthenticatedAuthorityApplicationsRouteImport } from './routes/_authenticated/authority/applications'
 import { Route as AuthenticatedAuthorityAnalyticsRouteImport } from './routes/_authenticated/authority/analytics'
 import { Route as AuthenticatedAuthorityAdminRequestsRouteImport } from './routes/_authenticated/authority/admin-requests'
 import { Route as AuthenticatedAdminOfficersRouteImport } from './routes/_authenticated/admin/officers'
@@ -144,6 +145,12 @@ const AuthenticatedAuthorityAuditLogsRoute =
     path: '/authority/audit-logs',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedAuthorityApplicationsRoute =
+  AuthenticatedAuthorityApplicationsRouteImport.update({
+    id: '/authority/applications',
+    path: '/authority/applications',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedAuthorityAnalyticsRoute =
   AuthenticatedAuthorityAnalyticsRouteImport.update({
     id: '/authority/analytics',
@@ -202,6 +209,7 @@ export interface FileRoutesByFullPath {
   '/admin/officers': typeof AuthenticatedAdminOfficersRoute
   '/authority/admin-requests': typeof AuthenticatedAuthorityAdminRequestsRoute
   '/authority/analytics': typeof AuthenticatedAuthorityAnalyticsRoute
+  '/authority/applications': typeof AuthenticatedAuthorityApplicationsRoute
   '/authority/audit-logs': typeof AuthenticatedAuthorityAuditLogsRoute
   '/authority/complaints': typeof AuthenticatedAuthorityComplaintsRoute
   '/citizen/new': typeof AuthenticatedCitizenNewRoute
@@ -230,6 +238,7 @@ export interface FileRoutesByTo {
   '/admin/officers': typeof AuthenticatedAdminOfficersRoute
   '/authority/admin-requests': typeof AuthenticatedAuthorityAdminRequestsRoute
   '/authority/analytics': typeof AuthenticatedAuthorityAnalyticsRoute
+  '/authority/applications': typeof AuthenticatedAuthorityApplicationsRoute
   '/authority/audit-logs': typeof AuthenticatedAuthorityAuditLogsRoute
   '/authority/complaints': typeof AuthenticatedAuthorityComplaintsRoute
   '/citizen/new': typeof AuthenticatedCitizenNewRoute
@@ -260,6 +269,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/officers': typeof AuthenticatedAdminOfficersRoute
   '/_authenticated/authority/admin-requests': typeof AuthenticatedAuthorityAdminRequestsRoute
   '/_authenticated/authority/analytics': typeof AuthenticatedAuthorityAnalyticsRoute
+  '/_authenticated/authority/applications': typeof AuthenticatedAuthorityApplicationsRoute
   '/_authenticated/authority/audit-logs': typeof AuthenticatedAuthorityAuditLogsRoute
   '/_authenticated/authority/complaints': typeof AuthenticatedAuthorityComplaintsRoute
   '/_authenticated/citizen/new': typeof AuthenticatedCitizenNewRoute
@@ -290,6 +300,7 @@ export interface FileRouteTypes {
     | '/admin/officers'
     | '/authority/admin-requests'
     | '/authority/analytics'
+    | '/authority/applications'
     | '/authority/audit-logs'
     | '/authority/complaints'
     | '/citizen/new'
@@ -318,6 +329,7 @@ export interface FileRouteTypes {
     | '/admin/officers'
     | '/authority/admin-requests'
     | '/authority/analytics'
+    | '/authority/applications'
     | '/authority/audit-logs'
     | '/authority/complaints'
     | '/citizen/new'
@@ -347,6 +359,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/officers'
     | '/_authenticated/authority/admin-requests'
     | '/_authenticated/authority/analytics'
+    | '/_authenticated/authority/applications'
     | '/_authenticated/authority/audit-logs'
     | '/_authenticated/authority/complaints'
     | '/_authenticated/citizen/new'
@@ -515,6 +528,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAuthorityAuditLogsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/authority/applications': {
+      id: '/_authenticated/authority/applications'
+      path: '/authority/applications'
+      fullPath: '/authority/applications'
+      preLoaderRoute: typeof AuthenticatedAuthorityApplicationsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/authority/analytics': {
       id: '/_authenticated/authority/analytics'
       path: '/authority/analytics'
@@ -591,6 +611,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminOfficersRoute: typeof AuthenticatedAdminOfficersRoute
   AuthenticatedAuthorityAdminRequestsRoute: typeof AuthenticatedAuthorityAdminRequestsRoute
   AuthenticatedAuthorityAnalyticsRoute: typeof AuthenticatedAuthorityAnalyticsRoute
+  AuthenticatedAuthorityApplicationsRoute: typeof AuthenticatedAuthorityApplicationsRoute
   AuthenticatedAuthorityAuditLogsRoute: typeof AuthenticatedAuthorityAuditLogsRoute
   AuthenticatedAuthorityComplaintsRoute: typeof AuthenticatedAuthorityComplaintsRoute
   AuthenticatedCitizenNewRoute: typeof AuthenticatedCitizenNewRoute
@@ -611,6 +632,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAuthorityAdminRequestsRoute:
     AuthenticatedAuthorityAdminRequestsRoute,
   AuthenticatedAuthorityAnalyticsRoute: AuthenticatedAuthorityAnalyticsRoute,
+  AuthenticatedAuthorityApplicationsRoute:
+    AuthenticatedAuthorityApplicationsRoute,
   AuthenticatedAuthorityAuditLogsRoute: AuthenticatedAuthorityAuditLogsRoute,
   AuthenticatedAuthorityComplaintsRoute: AuthenticatedAuthorityComplaintsRoute,
   AuthenticatedCitizenNewRoute: AuthenticatedCitizenNewRoute,
