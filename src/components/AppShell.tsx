@@ -29,6 +29,7 @@ const NAV: Record<AppRole, NavItem[]> = {
   government_authority: [
     { to: "/authority", label: "Dashboard", icon: LayoutDashboard },
     { to: "/authority/admin-requests", label: "Admin Requests", icon: ShieldCheck },
+    { to: "/authority/applications", label: "Service Applications", icon: FileCheck },
     { to: "/authority/complaints", label: "All Complaints", icon: FileText },
     { to: "/authority/analytics", label: "Analytics", icon: BarChart3 },
     { to: "/authority/audit-logs", label: "Audit Logs", icon: ScrollText },
