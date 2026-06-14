@@ -2,6 +2,78 @@ import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { z } from "zod";
 
+// --- Admin self-registration (atomic, server-side, no privilege leak) ---
+const registerAdminSchema = z.object({
+  fullName: z.string().min(2).max(120),
+  email: z.string().email(),
+  password: z.string().min(8).max(72),
+  mobileNumber: z.string().min(5).max(20),
+  employeeId: z.string().min(2).max(50),
+  department: z.string().min(1).max(100),
+  district: z.string().min(1).max(100),
+  mandal: z.string().min(1).max(100),
+  villageWard: z.string().min(1).max(100),
+});
+export const registerAdminRequest = createServerFn({ method: "POST" })
+  .inputValidator((d: unknown) => registerAdminSchema.parse(d))
+  .handler(async ({ data }) => {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+
+    // Employee ID must be unique across admin_registrations
+    const { data: dup } = await supabaseAdmin
+      .from("admin_registrations").select("id").eq("employee_id", data.employeeId).maybeSingle();
+    if (dup) throw new Error("Employee ID is already registered.");
+
+    // Create auth user — trigger inserts profile (active=false) and citizen role.
+    const { data: created, error } = await supabaseAdmin.auth.admin.createUser({
+      email: data.email,
+      password: data.password,
+      email_confirm: true,
+      user_metadata: {
+        full_name: data.fullName,
+        mobile_number: data.mobileNumber,
+        intended_role: "admin",
+      },
+    });
+    if (error || !created.user) throw new Error(error?.message ?? "Failed to create account");
+
+    const userId = created.user.id;
+
+    // Ensure profile fields are set and account is inactive until approval.
+    await supabaseAdmin.from("profiles").update({
+      mobile_number: data.mobileNumber,
+      department: data.department,
+      active_status: false,
+    }).eq("id", userId);
+
+    // Always create the registration request (using service role — bypasses RLS reliably).
+    const { error: regErr } = await supabaseAdmin.from("admin_registrations").insert({
+      user_id: userId,
+      employee_id: data.employeeId,
+      district: data.district,
+      mandal: data.mandal,
+      village_ward: data.villageWard,
+      department: data.department,
+      verification_status: "pending",
+    });
+    if (regErr) {
+      // Roll back the orphan auth user so the user can retry cleanly.
+      await supabaseAdmin.auth.admin.deleteUser(userId).catch(() => {});
+      throw new Error(`Failed to create approval request: ${regErr.message}`);
+    }
+
+    await supabaseAdmin.from("audit_logs").insert({
+      actor_id: userId,
+      actor_email: data.email,
+      action: "ADMIN_REGISTRATION_SUBMITTED",
+      entity_type: "admin_registration",
+      entity_id: userId,
+      metadata: { employee_id: data.employeeId, department: data.department },
+    });
+    return { ok: true };
+  });
+
+
 // --- Bootstrap status (public) ---
 export const getBootstrapStatus = createServerFn({ method: "GET" }).handler(async () => {
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
