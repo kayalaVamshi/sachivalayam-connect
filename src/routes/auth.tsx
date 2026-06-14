@@ -35,14 +35,16 @@ function AuthPage() {
         await supabase.auth.signOut();
         throw new Error("Your account is not active. Please contact the authority.");
       }
-      // check admin verification
+      // check admin verification (block if not yet approved or no request exists)
       const { data: roles } = await supabase.from("user_roles").select("role").eq("user_id", data.user.id);
       const isAdmin = roles?.some((r) => r.role === "admin");
       if (isAdmin) {
         const { data: reg } = await supabase.from("admin_registrations").select("verification_status").eq("user_id", data.user.id).maybeSingle();
-        if (reg && reg.verification_status !== "approved") {
+        if (!reg || reg.verification_status !== "approved") {
           await supabase.auth.signOut();
-          throw new Error(`Admin registration is ${reg.verification_status}. You cannot login yet.`);
+          throw new Error(reg
+            ? `Admin registration is ${reg.verification_status}. You cannot login yet.`
+            : "Admin access has not been approved by the Government Authority.");
         }
       }
       await supabase.from("profiles").update({ last_login: new Date().toISOString() }).eq("id", data.user.id);
