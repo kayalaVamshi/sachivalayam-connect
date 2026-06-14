@@ -80,7 +80,8 @@ export const assignServiceOfficer = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => assignSchema.parse(d))
   .handler(async ({ data, context }) => {
     const { data: isAdmin } = await context.supabase.rpc("has_role", { _user_id: context.userId, _role: "admin" });
-    if (!isAdmin) throw new Error("Forbidden");
+    const { data: isGov } = await context.supabase.rpc("has_role", { _user_id: context.userId, _role: "government_authority" });
+    if (!isAdmin && !isGov) throw new Error("Forbidden");
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: prof } = await supabaseAdmin.from("profiles").select("department").eq("id", data.officerId).maybeSingle();
     const { data: app } = await supabaseAdmin.from("service_applications").update({
