@@ -51,10 +51,18 @@ function ComplaintDetail() {
   useEffect(() => { load(); /* eslint-disable-next-line */ }, [id]);
 
   useEffect(() => {
-    if (role === "admin") {
-      supabase.from("officers").select("user_id,department,profiles!inner(full_name)").eq("active", true)
-        .then(({ data }) => setOfficers((data as unknown as OfficerOpt[]) ?? []));
-    }
+    if (role !== "admin" && role !== "government_authority") return;
+    (async () => {
+      const { data: o, error } = await supabase.from("officers").select("user_id,department").eq("active", true);
+      console.log("[officers dropdown] fetch", { count: o?.length ?? 0, error: error?.message });
+      const ids = (o ?? []).map((x) => x.user_id);
+      if (!ids.length) { setOfficers([]); return; }
+      const { data: p } = await supabase.from("profiles").select("id,full_name").in("id", ids);
+      const map: Record<string, string> = {}; p?.forEach((x) => { map[x.id] = x.full_name; });
+      const opts = (o ?? []).map((x) => ({ user_id: x.user_id, department: x.department, full_name: map[x.user_id] ?? "(unnamed)" }));
+      console.log("[officers dropdown] ready", opts);
+      setOfficers(opts);
+    })();
   }, [role]);
 
   if (!c) return <div className="text-muted-foreground">Loading…</div>;
