@@ -9,7 +9,9 @@ export const Route = createFileRoute("/_authenticated/citizen/")({ component: Ci
 
 interface Complaint {
   id: string; complaint_number: string; title: string; category: string;
-  status: string; created_at: string; department: string | null;
+  status: string; created_at: string; updated_at: string; department: string | null;
+  assigned_officer_id: string | null; last_remark: string | null;
+  officer_name?: string;
 }
 
 function CitizenDashboard() {
@@ -20,9 +22,19 @@ function CitizenDashboard() {
 
   useEffect(() => {
     if (!user) return;
-    supabase.from("complaints").select("id,complaint_number,title,category,status,created_at,department")
-      .eq("citizen_id", user.id).order("created_at", { ascending: false })
-      .then(({ data }) => setComplaints((data as Complaint[]) ?? []));
+    (async () => {
+      const { data } = await supabase.from("complaints")
+        .select("id,complaint_number,title,category,status,created_at,updated_at,department,assigned_officer_id,last_remark")
+        .eq("citizen_id", user.id).order("created_at", { ascending: false });
+      const rows = (data as Complaint[]) ?? [];
+      const offIds = Array.from(new Set(rows.map((r) => r.assigned_officer_id).filter(Boolean) as string[]));
+      const nameMap: Record<string, string> = {};
+      if (offIds.length) {
+        const { data: profs } = await supabase.from("profiles").select("id,full_name").in("id", offIds);
+        profs?.forEach((p) => { nameMap[p.id] = p.full_name; });
+      }
+      setComplaints(rows.map((r) => ({ ...r, officer_name: r.assigned_officer_id ? nameMap[r.assigned_officer_id] : undefined })));
+    })();
   }, [user]);
 
   const filtered = complaints.filter((c) =>
