@@ -11,7 +11,8 @@ export const Route = createFileRoute("/_authenticated/complaints/$id")({ compone
 interface ComplaintRow {
   id: string; complaint_number: string; title: string; category: string; description: string;
   location: string; photo_url: string | null; status: string; created_at: string;
-  citizen_id: string; assigned_officer_id: string | null; department: string | null; last_remark: string | null;
+  citizen_id: string; assigned_officer_id: string | null; assigned_admin_id: string | null;
+  department: string | null; last_remark: string | null;
 }
 interface TimelineRow { id: string; status: string; remarks: string | null; created_at: string; updated_by: string | null }
 interface OfficerOpt { user_id: string; department: string; full_name: string }
