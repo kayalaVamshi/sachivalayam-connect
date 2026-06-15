@@ -91,16 +91,18 @@ function CitizenDashboard() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead className="bg-muted text-left text-xs uppercase text-muted-foreground">
-              <tr><th className="p-3">Complaint ID</th><th className="p-3">Title</th><th className="p-3">Category</th><th className="p-3">Status</th><th className="p-3">Submitted</th><th className="p-3"></th></tr>
+              <tr><th className="p-3">Complaint ID</th><th className="p-3">Title</th><th className="p-3">Category</th><th className="p-3">Status</th><th className="p-3">Assigned Officer</th><th className="p-3">Last Update</th><th className="p-3">Submitted</th><th className="p-3"></th></tr>
             </thead>
             <tbody>
-              {filtered.length === 0 && <tr><td colSpan={6} className="p-6 text-center text-muted-foreground">No complaints yet. Submit your first complaint to get started.</td></tr>}
+              {filtered.length === 0 && <tr><td colSpan={8} className="p-6 text-center text-muted-foreground">No complaints yet. Submit your first complaint to get started.</td></tr>}
               {filtered.map((c) => (
                 <tr key={c.id} className="border-t">
                   <td className="p-3 font-mono font-semibold">{c.complaint_number}</td>
                   <td className="p-3">{c.title}</td>
                   <td className="p-3 capitalize">{c.category.replace(/_/g, " ")}</td>
                   <td className="p-3"><StatusBadge status={c.status} /></td>
+                  <td className="p-3">{c.officer_name ? <span>{c.officer_name}<div className="text-xs text-muted-foreground">{c.department}</div></span> : <span className="text-muted-foreground">—</span>}</td>
+                  <td className="p-3 text-muted-foreground">{new Date(c.updated_at).toLocaleDateString()}{c.last_remark && <div className="text-xs">{c.last_remark}</div>}</td>
                   <td className="p-3 text-muted-foreground">{new Date(c.created_at).toLocaleDateString()}</td>
                   <td className="p-3"><Link to="/complaints/$id" params={{ id: c.id }} className="text-primary font-medium hover:underline">View</Link></td>
                 </tr>
