@@ -124,7 +124,7 @@ function ComplaintDetail() {
               <div className="flex flex-wrap gap-2">
                 <select value={assignTo} onChange={(e) => setAssignTo(e.target.value)} className="rounded-md border bg-background px-3 py-2 text-sm">
                   <option value="">Select officer…</option>
-                  {officers.map((o) => <option key={o.user_id} value={o.user_id}>{o.profiles?.full_name} — {o.department}</option>)}
+                  {officers.map((o) => <option key={o.user_id} value={o.user_id}>{o.full_name} — {o.department}</option>)}
                 </select>
                 <input placeholder="Remarks (optional)" value={statusForm.remarks} onChange={(e) => setStatusForm({ ...statusForm, remarks: e.target.value })} className="min-w-[200px] flex-1 rounded-md border bg-background px-3 py-2 text-sm" />
                 <button onClick={doAssign} disabled={busy} className="rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90 disabled:opacity-60">Assign</button>
