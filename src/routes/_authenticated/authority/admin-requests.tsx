@@ -12,8 +12,6 @@ interface Row {
   department: string; verification_status: string; created_at: string; archived: boolean;
   full_name?: string | null; email?: string | null; mobile_number?: string | null; active_status?: boolean;
 }
-  full_name?: string | null; email?: string | null; mobile_number?: string | null; active_status?: boolean;
-}
 
 function AdminRequests() {
   const [rows, setRows] = useState<Row[]>([]);
