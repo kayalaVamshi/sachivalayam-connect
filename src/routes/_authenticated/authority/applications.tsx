@@ -134,7 +134,7 @@ function AuthorityApplications() {
                   <td className="p-3 text-muted-foreground">{new Date(r.created_at).toLocaleDateString()}</td>
                   <td className="p-3 space-x-1 space-y-1 whitespace-nowrap">
                     <Link to="/citizen/services/$id" params={{ id: r.id }} className="inline-block rounded border px-2 py-1 text-xs hover:bg-muted">View</Link>
-                    <button disabled={busy} onClick={() => assign(r.id)} className="rounded bg-primary px-2 py-1 text-xs font-semibold text-primary-foreground hover:bg-primary/90 disabled:opacity-60">
+                    <button disabled={busy} onClick={() => openAssign(r)} className="rounded bg-primary px-2 py-1 text-xs font-semibold text-primary-foreground hover:bg-primary/90 disabled:opacity-60">
                       {r.assigned_officer_id ? "Reassign" : "Assign"}
                     </button>
                     <button disabled={busy} onClick={() => reqDocs(r.id)} className="rounded bg-amber-600 px-2 py-1 text-xs font-semibold text-white hover:bg-amber-700 disabled:opacity-60">Request Docs</button>
