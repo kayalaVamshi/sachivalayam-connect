@@ -81,10 +81,10 @@ function AdminApplications() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead className="bg-muted text-left text-xs uppercase text-muted-foreground">
-              <tr><th className="p-3">ID</th><th className="p-3">Citizen</th><th className="p-3">Type</th><th className="p-3">Location</th><th className="p-3">Status</th><th className="p-3">Applied</th><th className="p-3">Action</th></tr>
+              <tr><th className="p-3">ID</th><th className="p-3">Citizen</th><th className="p-3">Type</th><th className="p-3">Location</th><th className="p-3">Status</th><th className="p-3">Officer</th><th className="p-3">Applied</th><th className="p-3">Action</th></tr>
             </thead>
             <tbody>
-              {filtered.length === 0 && <tr><td colSpan={7} className="p-6 text-center text-muted-foreground">No applications.</td></tr>}
+              {filtered.length === 0 && <tr><td colSpan={8} className="p-6 text-center text-muted-foreground">No applications.</td></tr>}
               {filtered.map((r) => (
                 <tr key={r.id} className="border-t">
                   <td className="p-3 font-mono font-semibold">{r.application_number}</td>
@@ -92,6 +92,7 @@ function AdminApplications() {
                   <td className="p-3 capitalize">{r.application_type.replace(/_/g," ")}</td>
                   <td className="p-3 text-muted-foreground">{r.village}, {r.mandal}, {r.district}</td>
                   <td className="p-3"><StatusBadge status={r.status} /></td>
+                  <td className="p-3">{r.assigned_officer_id ? <span>{officerMap[r.assigned_officer_id] ?? "—"}{r.department && <div className="text-xs text-muted-foreground">{r.department}</div>}</span> : <span className="text-muted-foreground">—</span>}</td>
                   <td className="p-3 text-muted-foreground">{new Date(r.created_at).toLocaleDateString()}</td>
                   <td className="p-3 space-x-2 whitespace-nowrap">
                     <button disabled={busy} onClick={() => assign(r.id)} className="rounded bg-primary px-2 py-1 text-xs font-semibold text-primary-foreground hover:bg-primary/90">
