@@ -148,6 +148,29 @@ function AuthorityApplications() {
           </table>
         </div>
       </div>
+
+      {assignFor && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={() => !busy && setAssignFor(null)}>
+          <div className="w-full max-w-md rounded-lg border bg-card p-5 shadow-xl" onClick={(e) => e.stopPropagation()}>
+            <h2 className="text-lg font-semibold">{assignFor.assigned_officer_id ? "Reassign" : "Assign"} Officer</h2>
+            <p className="mt-1 text-xs text-muted-foreground">Application <span className="font-mono">{assignFor.application_number}</span> — {assignFor.citizen_name}</p>
+            <label className="mt-4 block text-xs font-semibold uppercase text-muted-foreground">Officer</label>
+            <select value={pickedOfficer} onChange={(e) => setPickedOfficer(e.target.value)} className="mt-1 w-full rounded-md border bg-background px-3 py-2 text-sm">
+              {officers.map((o) => (
+                <option key={o.user_id} value={o.user_id}>{o.full_name} — {o.department}</option>
+              ))}
+            </select>
+            <label className="mt-4 block text-xs font-semibold uppercase text-muted-foreground">Remarks (optional)</label>
+            <textarea value={pickedRemarks} onChange={(e) => setPickedRemarks(e.target.value)} rows={3} className="mt-1 w-full rounded-md border bg-background px-3 py-2 text-sm" />
+            <div className="mt-5 flex justify-end gap-2">
+              <button disabled={busy} onClick={() => setAssignFor(null)} className="rounded border px-3 py-1.5 text-sm hover:bg-muted disabled:opacity-60">Cancel</button>
+              <button disabled={busy || !pickedOfficer} onClick={submitAssign} className="rounded bg-primary px-4 py-1.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90 disabled:opacity-60">
+                {busy ? "Assigning…" : "Confirm"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
