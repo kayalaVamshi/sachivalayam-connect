@@ -25,6 +25,9 @@ function AuthorityApplications() {
   const [type, setType] = useState("");
   const [q, setQ] = useState("");
   const [busy, setBusy] = useState(false);
+  const [assignFor, setAssignFor] = useState<Row | null>(null);
+  const [pickedOfficer, setPickedOfficer] = useState("");
+  const [pickedRemarks, setPickedRemarks] = useState("");
 
   const load = async () => {
     let query = supabase.from("service_applications").select("*").order("created_at", { ascending: false });
@@ -34,7 +37,7 @@ function AuthorityApplications() {
     setRows((data as Row[]) ?? []);
   };
   const loadOfficers = async () => {
-    const { data: o } = await supabase.from("officers").select("user_id,department");
+    const { data: o } = await supabase.from("officers").select("user_id,department").eq("active", true);
     const ids = (o ?? []).map((x) => x.user_id);
     const map: Record<string, string> = {};
     if (ids.length) {
@@ -42,21 +45,26 @@ function AuthorityApplications() {
       p?.forEach((x) => { map[x.id] = x.full_name; });
     }
     setOfficerMap(map);
-    setOfficers((o ?? []).map((x) => ({ user_id: x.user_id, department: x.department, full_name: map[x.user_id] ?? "" })));
+    setOfficers((o ?? []).map((x) => ({ user_id: x.user_id, department: x.department, full_name: map[x.user_id] ?? "(unnamed)" })));
   };
   useEffect(() => { load(); /* eslint-disable-next-line */ }, [status, type]);
   useEffect(() => { loadOfficers(); }, []);
 
-  const assign = async (id: string) => {
+  const openAssign = (row: Row) => {
     if (!officers.length) { toast.error("No officers available. Ask an Admin to create officers."); return; }
-    const picks = officers.map((o, i) => `${i + 1}. ${o.full_name} (${o.department})`).join("\n");
-    const idx = prompt(`Assign officer:\n${picks}`);
-    const n = Number(idx);
-    if (!n || n < 1 || n > officers.length) return;
-    const remarks = prompt("Remarks (optional):") ?? undefined;
+    setPickedOfficer(row.assigned_officer_id ?? officers[0].user_id);
+    setPickedRemarks("");
+    setAssignFor(row);
+  };
+  const submitAssign = async () => {
+    if (!assignFor || !pickedOfficer) return;
     setBusy(true);
-    try { await assignServiceOfficer({ data: { applicationId: id, officerId: officers[n - 1].user_id, remarks } }); toast.success("Assigned"); await load(); }
-    catch (e) { toast.error(e instanceof Error ? e.message : "Failed"); }
+    try {
+      await assignServiceOfficer({ data: { applicationId: assignFor.id, officerId: pickedOfficer, remarks: pickedRemarks || undefined } });
+      toast.success("Officer assigned");
+      setAssignFor(null);
+      await load();
+    } catch (e) { toast.error(e instanceof Error ? e.message : "Failed to assign"); }
     finally { setBusy(false); }
   };
 
