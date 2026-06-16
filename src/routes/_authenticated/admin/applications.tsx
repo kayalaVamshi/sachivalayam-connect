@@ -10,7 +10,7 @@ export const Route = createFileRoute("/_authenticated/admin/applications")({ com
 interface Row {
   id: string; application_number: string; application_type: string; status: string;
   citizen_name: string; district: string; mandal: string; village: string;
-  assigned_officer_id: string | null; created_at: string;
+  assigned_officer_id: string | null; department: string | null; created_at: string;
 }
 interface Officer { user_id: string; department: string; full_name: string }
 
